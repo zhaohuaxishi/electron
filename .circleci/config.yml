@@ -1590,6 +1590,7 @@ jobs:
       <<: *env-testing-build
       <<: *env-enable-sccache
       <<: *env-ninja-status
+      GCLIENT_EXTRA_ARGS: '--custom-var=checkout_mac=True --custom-var=host_os=mac'
     steps:
       - electron-build:
           persist: true
@@ -1638,6 +1639,7 @@ jobs:
       <<: *env-testing-build
       <<: *env-enable-sccache
       <<: *env-ninja-status
+      GCLIENT_EXTRA_ARGS: '--custom-var=checkout_mac=True --custom-var=host_os=mac'
     steps:
       - electron-build:
           persist: true
