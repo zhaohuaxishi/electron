@@ -646,7 +646,7 @@ step-ninja-report: &step-ninja-report
 step-generate-deps-hash: &step-generate-deps-hash
   run:
     name: Generate DEPS Hash
-    command: node src/electron/script/generate-deps-hash.js
+    command: node src/electron/script/generate-deps-hash.js && cat src/electron/.depshash-target
 
 step-touch-sync-done: &step-touch-sync-done
   run:
@@ -716,7 +716,7 @@ step-run-electron-only-hooks: &step-run-electron-only-hooks
 step-generate-deps-hash-cleanly: &step-generate-deps-hash-cleanly
   run:
     name: Generate DEPS Hash
-    command: (cd src/electron && git checkout .) && node src/electron/script/generate-deps-hash.js
+    command: (cd src/electron && git checkout .) && node src/electron/script/generate-deps-hash.js && cat src/electron/.depshash-target
 
 # Mark the sync as done for future cache saving
 step-mark-sync-done: &step-mark-sync-done
@@ -1261,10 +1261,7 @@ commands:
             - *step-delete-git-directories
 
             # Electron app
-            - when:
-                unless: << parameters.out-cache-attached >>
-                steps:
-                  - *step-restore-out-cache
+            - *step-restore-out-cache
             - *step-electron-build
             - *step-save-out-cache
             - *step-ninja-summary
