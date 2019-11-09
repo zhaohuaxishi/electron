@@ -1590,11 +1590,11 @@ jobs:
       <<: *env-testing-build
       <<: *env-enable-sccache
       <<: *env-ninja-status
-      GCLIENT_EXTRA_ARGS: '--custom-var=checkout_mac=True --custom-var=host_os=mac'
     steps:
       - electron-build:
           persist: true
-          checkout: true
+          checkout: false
+          attach: true
 
   osx-testing-gn-check:
     <<: *machine-mac
@@ -1639,11 +1639,12 @@ jobs:
       <<: *env-testing-build
       <<: *env-enable-sccache
       <<: *env-ninja-status
-      GCLIENT_EXTRA_ARGS: '--custom-var=checkout_mac=True --custom-var=host_os=mac'
     steps:
       - electron-build:
           persist: true
-          checkout: true
+          checkout: false
+          attach: true
+
 
   mas-testing-gn-check:
     <<: *machine-mac
@@ -2032,7 +2033,9 @@ workflows:
       - mac-checkout-fast
       - mac-checkout-and-save-cache
 
-      - osx-testing
+      - osx-testing:
+          requires:
+            - mac-checkout-fast
 
       - osx-testing-gn-check:
           requires:
@@ -2042,7 +2045,9 @@ workflows:
           requires:
             - osx-testing
 
-      - mas-testing
+      - mas-testing:
+          requires:
+            - mac-checkout-fast
 
       - mas-testing-gn-check:
           requires:
