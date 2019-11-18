@@ -5,11 +5,15 @@
 #include "shell/app/node_main.h"
 
 #include <memory>
+#include <set>
 #include <string>
 #include <utility>
+#include <vector>
 
 #include "base/command_line.h"
 #include "base/feature_list.h"
+#include "base/strings/string_util.h"
+#include "base/strings/utf_string_conversions.h"
 #include "base/task/thread_pool/thread_pool_instance.h"
 #include "base/threading/thread_task_runner_handle.h"
 #include "electron/electron_version.h"
@@ -28,6 +32,42 @@
 #if defined(_WIN64)
 #include "shell/common/crash_reporter/crash_reporter_win.h"
 #endif
+
+namespace {
+
+// Initialize Node.js cli options to pass to Node.js
+// See https://nodejs.org/api/cli.html#cli_options
+void SetNodeCliFlags() {
+  // Options that are unilaterally disallowed
+  const std::set<std::string> disallowed = {
+      "--openssl-config", "--use-bundled-ca", "--use-openssl-ca",
+      "--force-fips", "--enable-fips"};
+
+  std::vector<std::string> args;
+  for (const auto& arg : base::CommandLine::ForCurrentProcess()->argv()) {
+#if defined(OS_WIN)
+    std::string option = base::UTF16ToUTF8(arg);
+#else
+    std::string option = arg;
+#endif
+    auto stripped = option.substr(0, option.find("="));
+    if (disallowed.find(stripped) != disallowed.end()) {
+      LOG(ERROR) << "The Node.js cli flag " << stripped
+                 << " is not supported in Electron";
+    } else {
+      args.push_back(option);
+    }
+  }
+
+  std::vector<std::string> exec_args;
+  std::vector<std::string> errors;
+
+  // Node.js itself will output parsing errors to
+  // console so we don't need to handle that ourselves
+  ProcessGlobalArgs(&args, &exec_args, &errors, node::kDisallowedInEnvironment);
+}
+
+}  // namespace
 
 namespace electron {
 
@@ -63,6 +103,9 @@ int NodeMain(int argc, char* argv[]) {
 
     // Explicitly register electron's builtin modules.
     NodeBindings::RegisterBuiltinModules();
+
+    // Parse and set Node.js cli flags.
+    SetNodeCliFlags();
 
     int exec_argc;
     const char** exec_argv;
