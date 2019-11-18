@@ -407,7 +407,7 @@ diff --git a/components/printing/renderer/print_render_frame_helper.cc b/compone
 index 95bf92929983110de4489ee18f52783ddf178bcf..43c6b504f60a44daedd66f7dcf7d8d0b2cf9c6e9 100644
 --- a/components/printing/renderer/print_render_frame_helper.cc
 +++ b/components/printing/renderer/print_render_frame_helper.cc
-@@ -38,6 +38,7 @@
+@@ -39,6 +39,7 @@
  #include "net/base/registry_controlled_domains/registry_controlled_domain.h"
  #include "printing/buildflags/buildflags.h"
  #include "printing/metafile_skia.h"
@@ -415,7 +415,7 @@ index 95bf92929983110de4489ee18f52783ddf178bcf..43c6b504f60a44daedd66f7dcf7d8d0b
  #include "printing/units.h"
  #include "third_party/blink/public/common/associated_interfaces/associated_interface_registry.h"
  #include "third_party/blink/public/common/frame/frame_owner_element_type.h"
-@@ -1161,7 +1162,8 @@ void PrintRenderFrameHelper::ScriptedPrint(bool user_initiated) {
+@@ -1166,7 +1167,8 @@ void PrintRenderFrameHelper::ScriptedPrint(bool user_initiated) {
      web_frame->DispatchBeforePrintEvent();
      if (!weak_this)
        return;
@@ -425,7 +425,7 @@ index 95bf92929983110de4489ee18f52783ddf178bcf..43c6b504f60a44daedd66f7dcf7d8d0b
      if (weak_this)
        web_frame->DispatchAfterPrintEvent();
    }
-@@ -1197,7 +1199,7 @@ void PrintRenderFrameHelper::BindPrintRenderFrameReceiver(
+@@ -1202,7 +1204,7 @@ void PrintRenderFrameHelper::BindPrintRenderFrameReceiver(
    receivers_.Add(this, std::move(receiver));
  }
  
@@ -434,7 +434,7 @@ index 95bf92929983110de4489ee18f52783ddf178bcf..43c6b504f60a44daedd66f7dcf7d8d0b
    ScopedIPC scoped_ipc(weak_ptr_factory_.GetWeakPtr());
    if (ipc_nesting_level_ > 1)
      return;
-@@ -1211,7 +1213,7 @@ void PrintRenderFrameHelper::PrintRequestedPages() {
+@@ -1216,7 +1218,7 @@ void PrintRenderFrameHelper::PrintRequestedPages() {
    // If we are printing a PDF extension frame, find the plugin node and print
    // that instead.
    auto plugin = delegate_->GetPdfElement(frame);
@@ -443,7 +443,7 @@ index 95bf92929983110de4489ee18f52783ddf178bcf..43c6b504f60a44daedd66f7dcf7d8d0b
    if (!render_frame_gone_)
      frame->DispatchAfterPrintEvent();
    // WARNING: |this| may be gone at this point. Do not do any more work here and
-@@ -1228,7 +1230,7 @@ void PrintRenderFrameHelper::PrintForSystemDialog() {
+@@ -1233,7 +1235,7 @@ void PrintRenderFrameHelper::PrintForSystemDialog() {
      return;
    }
    Print(frame, print_preview_context_.source_node(),
@@ -452,7 +452,7 @@ index 95bf92929983110de4489ee18f52783ddf178bcf..43c6b504f60a44daedd66f7dcf7d8d0b
    if (!render_frame_gone_)
      frame->DispatchAfterPrintEvent();
    // WARNING: |this| may be gone at this point. Do not do any more work here and
-@@ -1308,6 +1310,8 @@ void PrintRenderFrameHelper::OnPrintPreview(
+@@ -1315,6 +1317,8 @@ void PrintRenderFrameHelper::OnPrintPreview(
    if (ipc_nesting_level_ > 1)
      return;
  
@@ -460,8 +460,8 @@ index 95bf92929983110de4489ee18f52783ddf178bcf..43c6b504f60a44daedd66f7dcf7d8d0b
 +  print_preview_context_.InitWithFrame(frame);
    print_preview_context_.OnPrintPreview();
  
-   UMA_HISTOGRAM_ENUMERATION("PrintPreview.PreviewEvent",
-@@ -1662,7 +1666,9 @@ void PrintRenderFrameHelper::PrintNode(const blink::WebNode& node) {
+   base::UmaHistogramEnumeration(print_preview_context_.IsForArc()
+@@ -1760,7 +1764,9 @@ void PrintRenderFrameHelper::PrintNode(const blink::WebNode& node) {
  
      auto self = weak_ptr_factory_.GetWeakPtr();
      Print(duplicate_node.GetDocument().GetFrame(), duplicate_node,
@@ -472,7 +472,7 @@ index 95bf92929983110de4489ee18f52783ddf178bcf..43c6b504f60a44daedd66f7dcf7d8d0b
      // Check if |this| is still valid.
      if (!self)
        return;
-@@ -1673,7 +1679,9 @@ void PrintRenderFrameHelper::PrintNode(const blink::WebNode& node) {
+@@ -1771,7 +1777,9 @@ void PrintRenderFrameHelper::PrintNode(const blink::WebNode& node) {
  
  void PrintRenderFrameHelper::Print(blink::WebLocalFrame* frame,
                                     const blink::WebNode& node,
@@ -483,7 +483,7 @@ index 95bf92929983110de4489ee18f52783ddf178bcf..43c6b504f60a44daedd66f7dcf7d8d0b
    // If still not finished with earlier print request simply ignore.
    if (prep_frame_view_)
      return;
-@@ -1681,7 +1689,7 @@ void PrintRenderFrameHelper::Print(blink::WebLocalFrame* frame,
+@@ -1779,7 +1787,7 @@ void PrintRenderFrameHelper::Print(blink::WebLocalFrame* frame,
    FrameReference frame_ref(frame);
  
    int expected_page_count = 0;
@@ -492,7 +492,7 @@ index 95bf92929983110de4489ee18f52783ddf178bcf..43c6b504f60a44daedd66f7dcf7d8d0b
      DidFinishPrinting(FAIL_PRINT_INIT);
      return;  // Failed to init print page settings.
    }
-@@ -1701,8 +1709,11 @@ void PrintRenderFrameHelper::Print(blink::WebLocalFrame* frame,
+@@ -1799,8 +1807,11 @@ void PrintRenderFrameHelper::Print(blink::WebLocalFrame* frame,
  
      PrintMsg_PrintPages_Params print_settings;
      auto self = weak_ptr_factory_.GetWeakPtr();
@@ -506,7 +506,7 @@ index 95bf92929983110de4489ee18f52783ddf178bcf..43c6b504f60a44daedd66f7dcf7d8d0b
      // Check if |this| is still valid.
      if (!self)
        return;
-@@ -1926,10 +1937,23 @@ void PrintRenderFrameHelper::IPCProcessed() {
+@@ -2024,10 +2035,23 @@ void PrintRenderFrameHelper::IPCProcessed() {
      base::ThreadTaskRunnerHandle::Get()->DeleteSoon(FROM_HERE, this);
  }
  
@@ -533,7 +533,7 @@ index 95bf92929983110de4489ee18f52783ddf178bcf..43c6b504f60a44daedd66f7dcf7d8d0b
    // Check if the printer returned any settings, if the settings is empty, we
    // can safely assume there are no printer drivers configured. So we safely
    // terminate.
-@@ -1949,12 +1973,14 @@ bool PrintRenderFrameHelper::InitPrintSettings(bool fit_to_paper_size) {
+@@ -2047,12 +2071,14 @@ bool PrintRenderFrameHelper::InitPrintSettings(bool fit_to_paper_size) {
    return result;
  }
  
@@ -556,7 +556,7 @@ diff --git a/components/printing/renderer/print_render_frame_helper.h b/componen
 index dcb0da469d5aab19bc568deb07d3619f8defa76e..6ade4fcb0d9e758e69016f1b032d7d37e1a635ab 100644
 --- a/components/printing/renderer/print_render_frame_helper.h
 +++ b/components/printing/renderer/print_render_frame_helper.h
-@@ -212,7 +212,7 @@ class PrintRenderFrameHelper
+@@ -223,7 +223,7 @@ class PrintRenderFrameHelper
        mojo::PendingAssociatedReceiver<mojom::PrintRenderFrame> receiver);
  
    // printing::mojom::PrintRenderFrame:
@@ -565,7 +565,7 @@ index dcb0da469d5aab19bc568deb07d3619f8defa76e..6ade4fcb0d9e758e69016f1b032d7d37
    void PrintForSystemDialog() override;
  #if BUILDFLAG(ENABLE_PRINT_PREVIEW)
    void InitiatePrintPreview(
-@@ -266,7 +266,9 @@ class PrintRenderFrameHelper
+@@ -290,7 +290,9 @@ class PrintRenderFrameHelper
    // WARNING: |this| may be gone after this method returns.
    void Print(blink::WebLocalFrame* frame,
               const blink::WebNode& node,
@@ -576,7 +576,7 @@ index dcb0da469d5aab19bc568deb07d3619f8defa76e..6ade4fcb0d9e758e69016f1b032d7d37
  
    // Notification when printing is done - signal tear-down/free resources.
    void DidFinishPrinting(PrintingResult result);
-@@ -275,12 +277,14 @@ class PrintRenderFrameHelper
+@@ -299,12 +301,14 @@ class PrintRenderFrameHelper
  
    // Initialize print page settings with default settings.
    // Used only for native printing workflow.
@@ -594,10 +594,10 @@ index dcb0da469d5aab19bc568deb07d3619f8defa76e..6ade4fcb0d9e758e69016f1b032d7d37
  #if BUILDFLAG(ENABLE_PRINT_PREVIEW)
    // Set options for print preset from source PDF document.
 diff --git a/printing/print_settings_conversion.cc b/printing/print_settings_conversion.cc
-index f844f92e2cc3b094e265ab40d4e47a4ab57b6ce0..3decdb6a8faa49d6f25b9be9340ff1e3a3b5461b 100644
+index e01d195261a4c993dddb77d7a355481bf02067cc..2e533a6981c86387f892f8a3aaed99478f6079ef 100644
 --- a/printing/print_settings_conversion.cc
 +++ b/printing/print_settings_conversion.cc
-@@ -182,12 +182,14 @@ bool PrintSettingsFromJobSettings(const base::Value& job_settings,
+@@ -186,12 +186,14 @@ bool PrintSettingsFromJobSettings(const base::Value& job_settings,
  
    settings->set_dpi_xy(dpi_horizontal.value(), dpi_vertical.value());
  #endif
