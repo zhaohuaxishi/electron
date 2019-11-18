@@ -8,10 +8,10 @@ This is needed by Electron to allow apps to limit how much an app can zoom in
 or out.
 
 diff --git a/content/browser/web_contents/web_contents_impl.cc b/content/browser/web_contents/web_contents_impl.cc
-index 78c1fc12f1a40402454ced93f79d8c270e37a3dc..dd208db5c2b9f7cecd63fbd9d2c738906106e367 100644
+index af289e4543aab31e8c70adf068b97fc9d7dfd402..8a2189156f73fd574d9a7f671250dde5555abcb1 100644
 --- a/content/browser/web_contents/web_contents_impl.cc
 +++ b/content/browser/web_contents/web_contents_impl.cc
-@@ -4175,10 +4175,18 @@ bool WebContentsImpl::GetClosedByUserGesture() {
+@@ -4187,10 +4187,18 @@ bool WebContentsImpl::GetClosedByUserGesture() {
    return closed_by_user_gesture_;
  }
  
@@ -31,10 +31,10 @@ index 78c1fc12f1a40402454ced93f79d8c270e37a3dc..dd208db5c2b9f7cecd63fbd9d2c73890
    return maximum_zoom_percent_;
  }
 diff --git a/content/browser/web_contents/web_contents_impl.h b/content/browser/web_contents/web_contents_impl.h
-index 82d41c05443ad5ff03dd6be39dbb219e220f3a3d..42cf1887c07e5277370c90941127362fa779fdca 100644
+index 188c8da6ddf105ac98ffdd0760266c0e86a3fb8e..0427e0f81812d6eec775b3cbc7c3d23385b671ba 100644
 --- a/content/browser/web_contents/web_contents_impl.h
 +++ b/content/browser/web_contents/web_contents_impl.h
-@@ -456,7 +456,9 @@ class CONTENT_EXPORT WebContentsImpl : public WebContents,
+@@ -457,7 +457,9 @@ class CONTENT_EXPORT WebContentsImpl : public WebContents,
    void SystemDragEnded(RenderWidgetHost* source_rwh) override;
    void SetClosedByUserGesture(bool value) override;
    bool GetClosedByUserGesture() override;
@@ -44,7 +44,7 @@ index 82d41c05443ad5ff03dd6be39dbb219e220f3a3d..42cf1887c07e5277370c90941127362f
    int GetMaximumZoomPercent() override;
    void SetPageScale(float page_scale_factor) override;
    gfx::Size GetPreferredSize() override;
-@@ -1724,8 +1726,8 @@ class CONTENT_EXPORT WebContentsImpl : public WebContents,
+@@ -1728,8 +1730,8 @@ class CONTENT_EXPORT WebContentsImpl : public WebContents,
    bool closed_by_user_gesture_;
  
    // Minimum/maximum zoom percent.
@@ -56,10 +56,10 @@ index 82d41c05443ad5ff03dd6be39dbb219e220f3a3d..42cf1887c07e5277370c90941127362f
    // Used to correctly handle integer zooming through a smooth scroll device.
    float zoom_scroll_remainder_;
 diff --git a/content/public/browser/web_contents.h b/content/public/browser/web_contents.h
-index 5e7a443877b3e81f269fc80ab2835e9778f2de53..3ac4374212b585524cd903202d064775c5c0177c 100644
+index 38a8b4db666bb9c549f67f36f0d1458b1d13d784..47850cd5d7941cce03520d5f0d1976bebb31bbde 100644
 --- a/content/public/browser/web_contents.h
 +++ b/content/public/browser/web_contents.h
-@@ -839,8 +839,10 @@ class WebContents : public PageNavigator,
+@@ -841,8 +841,10 @@ class WebContents : public PageNavigator,
    virtual void SetClosedByUserGesture(bool value) = 0;
    virtual bool GetClosedByUserGesture() = 0;
  
