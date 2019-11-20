@@ -6,7 +6,7 @@ Subject: Revert "Remove ContentRendererClient::ShouldFork."
 This reverts commit 6b068eb8ca4a3c7350bdafa22fc0cf0636ef8b74.
 
 diff --git a/chrome/renderer/chrome_content_renderer_client.cc b/chrome/renderer/chrome_content_renderer_client.cc
-index 4adb79bfc8e11d0b13b01f7858ee858a6c554f42..95bfeca43236c2d8b820324c1df8b8ea13b41fcf 100644
+index ca8ea8d93198c452ee3671c800d781b424985c16..dc56c19c18f5cab0f6a1ec31e32e7d6f432f6142 100644
 --- a/chrome/renderer/chrome_content_renderer_client.cc
 +++ b/chrome/renderer/chrome_content_renderer_client.cc
 @@ -1241,6 +1241,25 @@ bool ChromeContentRendererClient::AllowPopup() {
@@ -36,7 +36,7 @@ index 4adb79bfc8e11d0b13b01f7858ee858a6c554f42..95bfeca43236c2d8b820324c1df8b8ea
      WebLocalFrame* frame,
      ui::PageTransition transition_type,
 diff --git a/chrome/renderer/chrome_content_renderer_client.h b/chrome/renderer/chrome_content_renderer_client.h
-index 17ba0e5654f75b2d6afb67b05321d3826715cbec..8c79599489cfa4d0a9f891984bd3f62717785db6 100644
+index ba4ff12b1bd3db7e54bdcb5c18b9c02f5523a2d2..6167ddb1faec8a2f2c9492ac0e434569f9957612 100644
 --- a/chrome/renderer/chrome_content_renderer_client.h
 +++ b/chrome/renderer/chrome_content_renderer_client.h
 @@ -137,6 +137,11 @@ class ChromeContentRendererClient
@@ -52,7 +52,7 @@ index 17ba0e5654f75b2d6afb67b05321d3826715cbec..8c79599489cfa4d0a9f891984bd3f627
                         ui::PageTransition transition_type,
                         const blink::WebURL& url,
 diff --git a/content/public/renderer/content_renderer_client.cc b/content/public/renderer/content_renderer_client.cc
-index ccd9c50b299b00936cce032b842e509eeb157ab0..ed275b4ab86fdad2af974746841111c7c231c04c 100644
+index 36da488c6c307a20509c0eec1c71666da0212bdb..ee6f04482aa56bffc580381a06d2fdf51e5682d0 100644
 --- a/content/public/renderer/content_renderer_client.cc
 +++ b/content/public/renderer/content_renderer_client.cc
 @@ -105,6 +105,14 @@ bool ContentRendererClient::HandleNavigation(
@@ -71,7 +71,7 @@ index ccd9c50b299b00936cce032b842e509eeb157ab0..ed275b4ab86fdad2af974746841111c7
                                              ui::PageTransition transition_type,
                                              const blink::WebURL& url,
 diff --git a/content/public/renderer/content_renderer_client.h b/content/public/renderer/content_renderer_client.h
-index b2d0ff76ef76a620032fdaaabcced6364da92973..a5cfab8e0033d821d4c5150d700fd3fcfb27e8d1 100644
+index 91baca2a078bcb5ed9d0874ec4af019298a05e18..b1468b42e882d2bd6b761d8a3db266b2a430b514 100644
 --- a/content/public/renderer/content_renderer_client.h
 +++ b/content/public/renderer/content_renderer_client.h
 @@ -221,6 +221,13 @@ class CONTENT_EXPORT ContentRendererClient {
@@ -89,7 +89,7 @@ index b2d0ff76ef76a620032fdaaabcced6364da92973..a5cfab8e0033d821d4c5150d700fd3fc
    // |url|. If the function returns a valid |new_url|, the request must be
    // updated to use it. The |attach_same_site_cookies| output parameter
 diff --git a/content/renderer/render_frame_impl.cc b/content/renderer/render_frame_impl.cc
-index 236179e8f5850e17d3066366b46ba9664fd785c3..a3243e2d5fafe9effc122e42eeadb43dcb8198fe 100644
+index 27a651c20cb2e84331b012fbf26b2a6c05b8ea6d..353973ef3b514b22c0c599b6c1c70c5eaaa59ff4 100644
 --- a/content/renderer/render_frame_impl.cc
 +++ b/content/renderer/render_frame_impl.cc
 @@ -6028,6 +6028,15 @@ void RenderFrameImpl::BeginNavigation(

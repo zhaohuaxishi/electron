@@ -42,7 +42,7 @@ index 906a1ee4ac58b0744a32153bbaafeac4322a60e4..c90f4aead36cbf3767dc5094728963c2
    // another SiteInstance for the same site.
    void RegisterSiteInstance(SiteInstanceImpl* site_instance);
 diff --git a/content/browser/frame_host/render_frame_host_manager.cc b/content/browser/frame_host/render_frame_host_manager.cc
-index 1f9644db57a05ece96d90f8352f5e36b1114d887..18261bf1be24723a9dacad0098fbd04ebb3431b5 100644
+index 146885a76c09cc26905c8ae060c977c715cb9f01..008593593d18686fd5224933ca6e567950882f0d 100644
 --- a/content/browser/frame_host/render_frame_host_manager.cc
 +++ b/content/browser/frame_host/render_frame_host_manager.cc
 @@ -2123,6 +2123,16 @@ bool RenderFrameHostManager::InitRenderView(
@@ -139,10 +139,10 @@ index 1f9644db57a05ece96d90f8352f5e36b1114d887..18261bf1be24723a9dacad0098fbd04e
  }
  
 diff --git a/content/browser/site_instance_impl.cc b/content/browser/site_instance_impl.cc
-index ea72b3a9d57383a47c91795c11bd0b8fc2b92e55..2adb671d8c36ad22814b75c4be61fb3925dd2258 100644
+index 742d53d7f9f671300bfe75f12a25ef0c2f4912da..ac23999d3599306f507436f76b147e7e28df3946 100644
 --- a/content/browser/site_instance_impl.cc
 +++ b/content/browser/site_instance_impl.cc
-@@ -360,6 +360,10 @@ bool SiteInstanceImpl::HasRelatedSiteInstance(const GURL& url) {
+@@ -368,6 +368,10 @@ bool SiteInstanceImpl::HasRelatedSiteInstance(const GURL& url) {
    return browsing_instance_->HasSiteInstance(url);
  }
  

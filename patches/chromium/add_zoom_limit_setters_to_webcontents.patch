@@ -8,7 +8,7 @@ This is needed by Electron to allow apps to limit how much an app can zoom in
 or out.
 
 diff --git a/content/browser/web_contents/web_contents_impl.cc b/content/browser/web_contents/web_contents_impl.cc
-index 905c045815c68a269795190f511b3ac0840453e7..358573a0217432067af334e51e3cf0efe32898fd 100644
+index 6bbb07698eb21f03c48d88aa1c67e138302bf786..d831d44295a2c0341279c34e8368eeffa64e2783 100644
 --- a/content/browser/web_contents/web_contents_impl.cc
 +++ b/content/browser/web_contents/web_contents_impl.cc
 @@ -4173,10 +4173,18 @@ bool WebContentsImpl::GetClosedByUserGesture() {
@@ -31,7 +31,7 @@ index 905c045815c68a269795190f511b3ac0840453e7..358573a0217432067af334e51e3cf0ef
    return maximum_zoom_percent_;
  }
 diff --git a/content/browser/web_contents/web_contents_impl.h b/content/browser/web_contents/web_contents_impl.h
-index 188c8da6ddf105ac98ffdd0760266c0e86a3fb8e..0427e0f81812d6eec775b3cbc7c3d23385b671ba 100644
+index 970ffc6a05bdf5a5e1c78dab5d6e35bd009014a5..7b4082ac776fc78b4e3d220b0850140ed055635a 100644
 --- a/content/browser/web_contents/web_contents_impl.h
 +++ b/content/browser/web_contents/web_contents_impl.h
 @@ -457,7 +457,9 @@ class CONTENT_EXPORT WebContentsImpl : public WebContents,
@@ -44,7 +44,7 @@ index 188c8da6ddf105ac98ffdd0760266c0e86a3fb8e..0427e0f81812d6eec775b3cbc7c3d233
    int GetMaximumZoomPercent() override;
    void SetPageScale(float page_scale_factor) override;
    gfx::Size GetPreferredSize() override;
-@@ -1728,8 +1730,8 @@ class CONTENT_EXPORT WebContentsImpl : public WebContents,
+@@ -1730,8 +1732,8 @@ class CONTENT_EXPORT WebContentsImpl : public WebContents,
    bool closed_by_user_gesture_;
  
    // Minimum/maximum zoom percent.
@@ -56,7 +56,7 @@ index 188c8da6ddf105ac98ffdd0760266c0e86a3fb8e..0427e0f81812d6eec775b3cbc7c3d233
    // Used to correctly handle integer zooming through a smooth scroll device.
    float zoom_scroll_remainder_;
 diff --git a/content/public/browser/web_contents.h b/content/public/browser/web_contents.h
-index 38a8b4db666bb9c549f67f36f0d1458b1d13d784..47850cd5d7941cce03520d5f0d1976bebb31bbde 100644
+index dcc3604207b472f7ffa65a6768e2f87cca4c9952..8120828ea54b7ba1c283bf7a569b8a556a88d94c 100644
 --- a/content/public/browser/web_contents.h
 +++ b/content/public/browser/web_contents.h
 @@ -841,8 +841,10 @@ class WebContents : public PageNavigator,

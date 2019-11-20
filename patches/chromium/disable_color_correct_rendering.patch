@@ -37,10 +37,10 @@ index 4cfa0b7dd6f98df2ed2c6118423ac2d10c326da6..7d8b6dd422f2408f179aa6188897dea2
    // The pending tree will have the most recently updated color space, so
    // prefer that.
 diff --git a/cc/trees/layer_tree_settings.h b/cc/trees/layer_tree_settings.h
-index 182eb5f68731afdaba5ce71d0fa67ea1051eb0dc..3dd350583c3f23445841c3e46122ae6e809508b2 100644
+index 20bf2b409d049699528c7f784e195d86e84933b4..40d3ac04264aeb07380cac40de9a291687065d04 100644
 --- a/cc/trees/layer_tree_settings.h
 +++ b/cc/trees/layer_tree_settings.h
-@@ -96,6 +96,8 @@ class CC_EXPORT LayerTreeSettings {
+@@ -100,6 +100,8 @@ class CC_EXPORT LayerTreeSettings {
    bool use_rgba_4444 = false;
    bool unpremultiply_and_dither_low_bit_depth_tiles = false;
  
@@ -232,7 +232,7 @@ index ff602d0c5a7a58b800d1473631b16a0c9ed64760..143308bc62df88ca46a852ee7eecd0e9
      service_manager::switches::kGpuSandboxAllowSysVShm,
      service_manager::switches::kGpuSandboxFailuresFatal,
 diff --git a/content/browser/renderer_host/render_process_host_impl.cc b/content/browser/renderer_host/render_process_host_impl.cc
-index 5ce8509e1282516a5d786ea534630af352b77b8b..2a15f7426164bf1e8780cabf04870ab82d6c4292 100644
+index 3d9e7e476f38fc8f5558e92a5b460b94497a1809..b36ed5341ec269b743636ecf641b1bfac63eacc6 100644
 --- a/content/browser/renderer_host/render_process_host_impl.cc
 +++ b/content/browser/renderer_host/render_process_host_impl.cc
 @@ -227,6 +227,7 @@
@@ -252,7 +252,7 @@ index 5ce8509e1282516a5d786ea534630af352b77b8b..2a15f7426164bf1e8780cabf04870ab8
      service_manager::switches::kDisableInProcessStackTraces,
      service_manager::switches::kDisableSeccompFilterSandbox,
 diff --git a/content/renderer/render_widget.cc b/content/renderer/render_widget.cc
-index c45fd8d90f0cd79d87c0fb819c7409dcb6967387..15d47e6e66f6b73fdca94c934eb61c7b0660aab7 100644
+index 6c1f4b2678156dda43114fea84072ccc84cd2a30..72f831f2693d0d64ef6184902d99975e4ed8c57c 100644
 --- a/content/renderer/render_widget.cc
 +++ b/content/renderer/render_widget.cc
 @@ -2959,6 +2959,9 @@ cc::LayerTreeSettings RenderWidget::GenerateLayerTreeSettings(
